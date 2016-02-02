@@ -1,0 +1,28 @@
+{
+  "name": "node-webserver",
+  "version": "1.0.0",
+  "description": "node server exercise",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephanieg0/node-webserver.git"
+  },
+  "keywords": [],
+  "author": "Stephanie Goldstein <stephanie.miranda.valdez@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stephanieg0/node-webserver/issues"
+  },
+  "homepage": "https://github.com/stephanieg0/node-webserver#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.8.1"
+  }
+}
