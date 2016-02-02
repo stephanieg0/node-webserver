@@ -1,9 +1,8 @@
-//My mini Router
-
 'use-strict';
 
 const express = require('express');
 const app = express();
+const getMonth = require('./node_modules/node-cal/lib/month.js');
 
 const PORT = process.env.PORT || 3000;
 
@@ -47,8 +46,13 @@ app.get('/random/:min/:max', (req, res) => {
 
 });
 
-app.get('/cal', (req, res) => {
-  const month = require('node-cal/month.js');
+app.get('/cal/:month/:year', (req, res) => {
+    console.log('This is cal route');
+    const month = req.params.month;
+    const year = req.params.year;
+
+    res.send('<pre>' +  getMonth.MakeMonth(month, year) + '</pre>');
+
 });
 
 app.all('*', (req, res) => {

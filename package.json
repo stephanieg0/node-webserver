@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/stephanieg0/node-webserver#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "node-cal": "github:stephanieg0/node-cal"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"
