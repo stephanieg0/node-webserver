@@ -4,8 +4,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
+const bodyParser = require('body-parser');
 
 const getMonth = require('./node_modules/node-cal/lib/month.js');
 
@@ -15,28 +14,38 @@ app.set('view engine', 'jade');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.locals.title = "Stephanie's Calendar";
+
+app.use(bodyParser.urlencoded({ extended: false}));
+
 app.get('/', (req, res) => {
   const cal = getMonth.MakeMonth(2, 2016);
-
   res.render('index', {
-    title: "Stephanie's Calendar",
     date: new Date(),
     calendar: cal
   });
 
 });
 
+app.get('/contact', (req, res) => {
+  res.render('contact', {
+  });
+});
+
+app.post('/contact', (req,res) => {
+  //debugger;
+  console.log(req.body);
+  const name = req.body.name;
+  res.send(`<h1>Thank you for contacting us ${name}</h1>`);
+});
+
 app.get('/hello', (req, res)=>{
-
   const name = req.query.name;
-
   const msg = `<h1> Hello ${name} </h1> <h2> Goodbye ${name} </h2>`;
 
   //specify html format
   res.writeHead(200, {
-
       'Content-type': 'text/html'
-
   });
 
  //chunk response by character
@@ -53,8 +62,8 @@ app.get('/hello', (req, res)=>{
 
     res.end();
   }, msg.length * 1000 + 2000);
-
 });
+
 //accept two params and give a random number bewteen 1 and 5
 app.get('/random/:min/:max', (req, res) => {
 
