@@ -23,8 +23,10 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
+    "imgur": "^0.1.7",
     "jade": "^1.11.0",
     "morgan": "~1.6.1",
+    "multer": "^1.1.0",
     "node-cal": "github:stephanieg0/node-cal",
     "node-sass-middleware": "0.8.0",
     "serve-favicon": "~2.3.0"

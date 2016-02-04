@@ -1,17 +1,13 @@
-doctype html
-html
-  head
-    title= title
-    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css")
-    link(rel="stylesheet" href="../styles/style.css")
-  body
-    h1 Welcome to #{title}
-    i.fa.fa-thumbs-o-up
-    p Today's date is #{date.toLocaleDateString('en-US')}
-   div
-     i.fa.fa-calendar
-     button#get-cal Get Calendar
-   pre#cal #{calendar}
+extends ./layout.jade
 
-script(src='../vendor/jquery/dist/jquery.min.js')
-script(src='../javascript/app.js')
+block content
+  h1 Welcome to #{title}
+  i.fa.fa-thumbs-o-up
+  p Today's date is #{date.toLocaleDateString('en-US')}
+  div
+    i.fa.fa-calendar
+    button#get-cal Get Calendar
+  pre#cal #{calendar}
+
+  script(src='../vendor/jquery/dist/jquery.min.js')
+  script(src='../javascript/app.js')
