@@ -7,7 +7,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require ('multer');
 const upload = multer({ dest: 'tmp/uploads'});
-var fs = require('fs');
+const fs = require('fs');
+const imgur = require('imgur');
 
 const getMonth = require('./node_modules/node-cal/lib/month.js');
 
@@ -67,6 +68,15 @@ app.post('/sendphoto', upload.single('image'), (req, res) => {
             res.send('File uploaded to: ' + target_path + ' - ' + req.file.size + ' bytes');
         });
     });
+
+  imgur.uploadFile(target_path)
+    .then(function (json) {
+        console.log(json.data.link);
+    })
+    .catch(function (err) {
+        console.error(err.message);
+    });
+
 });//end of app.post
 
 app.get('/hello', (req, res) => {
