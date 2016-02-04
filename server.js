@@ -1,10 +1,30 @@
 'use-strict';
 
+//var $ = require('./public/vendor/jquery/dist/jquery.min.js');
 const express = require('express');
 const app = express();
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+
 const getMonth = require('./node_modules/node-cal/lib/month.js');
 
 const PORT = process.env.PORT || 3000;
+
+app.set('view engine', 'jade');
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  const cal = getMonth.MakeMonth(2, 2016);
+
+  res.render('index', {
+    title: "Stephanie's Calendar",
+    date: new Date(),
+    calendar: cal
+  });
+
+});
 
 app.get('/hello', (req, res)=>{
 
@@ -42,7 +62,7 @@ app.get('/random/:min/:max', (req, res) => {
   const max = req.params.max;
   const randomNumb = Math.floor( Math.random() * (max - min)) + min;
 
-  res.send(getRandomInit(randomNumb).toString());
+  res.send(randomNumb.toString());
 
 });
 
@@ -50,8 +70,9 @@ app.get('/cal/:month/:year', (req, res) => {
     console.log('This is cal route');
     const month = req.params.month;
     const year = req.params.year;
-
-    res.send('<pre>' +  getMonth.MakeMonth(month, year) + '</pre>');
+    const calendar = getMonth.MakeMonth(month, year);
+    console.log(month, year);
+    res.send('<pre>' + calendar + '</pre>');
 
 });
 

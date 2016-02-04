@@ -1,0 +1,17 @@
+#cal {
+  display: none;
+}
+
+.fa-calendar {
+  font-size: 20px;
+}
+
+#get-cal {
+  margin-left: 10px;
+  font-size: 18px;
+  background-color: #00BFA5;
+  color: white;
+  border: none;
+  height: 30px;
+  border-radius: 5px;
+}
