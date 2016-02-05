@@ -9,6 +9,9 @@ const multer = require ('multer');
 const upload = multer({ dest: 'tmp/uploads'});
 const fs = require('fs');
 const imgur = require('imgur');
+const request = require('request');
+const _ = require('lodash');
+const cheerio = require('cheerio');
 
 const getMonth = require('./node_modules/node-cal/lib/month.js');
 
@@ -20,7 +23,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.title = "Stephanie's Calendar";
 
-//app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   const cal = getMonth.MakeMonth(2, 2016);
@@ -28,7 +32,59 @@ app.get('/', (req, res) => {
     date: new Date(),
     calendar: cal
   });
+});
 
+app.get('/api', (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.send({hello: 'world'});
+});
+
+app.post('/api', (req, res) => {
+  console.log(req.body);//from postman
+  const obj = _.mapValues(req.body, val => val.toUpperCase());
+  res.send(obj);
+  console.log(obj);
+});
+
+app.get('/api/weather', (req, res) => {
+  const apiKey = '2485e7cf38367fdd4ae514375860d9d0';
+  const url = `https://api.forecast.io/forecast/${apiKey}/37.8267,-122.423`;
+  request.get(url, (error, response, body) => {
+    if (error) throw error;
+
+    res.header('Access-Control-Allow-Origin', '*');
+
+    res.send(JSON.parse(body));
+  });
+});
+
+app.get('/api/news', (req, res) => {
+  const url = 'http://cnn.com';
+
+  request.get(url, (error, response, html) => {
+    if (error) throw error;
+    //console.log(error);
+    const news = [];
+    const $ = cheerio.load(html);
+    const $bannerText = $('.banner-text');
+    news.push({
+      title: $bannerText.text(),
+      url: url + $bannerText.closest('a').attr('href')
+    });
+
+    const $cdHeadline = $('.cd__headline');
+    _.range(1, 12).forEach(i => {
+      const $headline = $cdHeadline.eq(i);
+
+      news.push({
+        title: $headline.text(),
+        url: url + $headline.find('a').attr('href')
+      });
+    });
+
+    res.send(news);
+
+  });
 });
 
 app.get('/contact', (req, res) => {
@@ -49,17 +105,22 @@ app.get('/sendphoto', (req, res) => {
 
 app.post('/sendphoto', upload.single('image'), (req, res) => {
   //temporary location of the file
+  //var tmp_path = req.file.path;
   var tmp_path = req.file.path;
+  console.log('temp path', tmp_path);
   const fullName = req.file.originalname;
+
+  //splitting the file type to append into new name
   const splitRes = fullName.split(".");
+
   //assign the file type to the new file name
   const newFileName = req.file.filename + '.' + splitRes[1];
-  console.log(newFileName);
+  //console.log(newFileName);
 
   //seting new path for new names
-  var target_path = './tmp/renamed/' + newFileName;
+  var target_path = './tmp/uploads/' + newFileName;
 
-  //move the file from the temporary location to the intended location
+  //saving renamed file with correct name
   fs.rename(tmp_path, target_path, function(err) {
         if (err) throw err;
         // delete the temporary file, so that the explicitly set temporary upload dir does not get filled with unwanted files
@@ -72,6 +133,10 @@ app.post('/sendphoto', upload.single('image'), (req, res) => {
   imgur.uploadFile(target_path)
     .then(function (json) {
         console.log(json.data.link);
+        //deleting renamed file
+        fs.unlink(target_path, function() {
+          console.log(`Deleted renamed file ${target_path}`);
+        });
     })
     .catch(function (err) {
         console.error(err.message);
