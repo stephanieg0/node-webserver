@@ -87,6 +87,31 @@ app.get('/api/news', (req, res) => {
   });
 });
 
+//web scrapping reddit
+app.get('/api/reddit', (req, res) => {
+  const url = 'https://www.reddit.com/';
+
+  request.get(url, (error, response, html) => {
+    if (error) throw error;
+
+    const $ = cheerio.load(html);
+    const $titleObj = $('#siteTable a.title');
+    //console.log($titleObj);
+    for (var i = 0; i < $titleObj.length; i++){
+      //console.log('$titleObj', $titleObj[i].attribs.href);
+
+      //sawpping all links for my youtube link.
+      $($titleObj[i]).attr('href', 'https://www.youtube.com/watch?v=5_sfnQDr1-o');
+      //console.log($titleObj[i]);
+    }
+
+    res.send($.html());
+
+    //console.log($.html());
+
+  });
+});
+
 app.get('/contact', (req, res) => {
   res.render('contact', {
   });
