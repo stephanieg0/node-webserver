@@ -38,6 +38,7 @@
     "imgur": "^0.1.7",
     "jade": "^1.11.0",
     "lodash": "^4.2.1",
+    "mongoose": "^4.4.3",
     "morgan": "~1.6.1",
     "multer": "^1.1.0",
     "node-cal": "github:stephanieg0/node-cal",
