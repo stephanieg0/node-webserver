@@ -17,7 +17,8 @@
     "env": {
       "mocha": true,
       "node": true,
-      "es6": true
+      "es6": true,
+      "jquery": true
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -41,7 +42,7 @@
     "mongoose": "^4.4.3",
     "morgan": "~1.6.1",
     "multer": "^1.1.0",
-    "node-cal": "github:stephanieg0/node-cal",
+    "node-cal": "git+https://github.com/stephanieg0/node-cal.git",
     "node-sass-middleware": "0.8.0",
     "request": "^2.69.0",
     "serve-favicon": "~2.3.0"

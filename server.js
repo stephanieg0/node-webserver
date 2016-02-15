@@ -1,8 +1,9 @@
 'use strict';
 
-//var $ = require('./public/vendor/jquery/dist/jquery.min.js');
+//dependencies
 const express = require('express');
 const app = express();
+const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
@@ -28,9 +29,12 @@ console.log('mongodb_url>>>>', MONGODB_URL);
 //localhost url 'mongodb://localhost:27017/node-webserver'
 
 
-
+//setting up jade files in the view folder
 app.set('view engine', 'jade');
 app.locals.title = "Stephanie's Calendar";
+
+//making public folder available
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
